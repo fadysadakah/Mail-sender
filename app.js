@@ -9,8 +9,7 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 var i;
 var mailOptions;
-var transporter;
-// ***********************************************************************************************************
+var transporter 
 
 // ***********************************************************************************************************
 function send(array) {
@@ -47,27 +46,24 @@ app.get('/', function (req, res) {
 })
 // ***********************************************************************************************************
 app.post('/', function (req, res) {
+console.log(req.body)
 
-    //  transporter = nodemailer.createTransport({
-    //     service: 'gmail', host: 'smtp.gmail.com', secure: true, port: 465, auth: { user: req.body.user, pass: req.body.pass }
-    // });
-     transporter = nodemailer.createTransport({
-         service: '', host: 'smtp.mail.yahoo.com', secure: true, port: 465 , auth: { user: req.body.user, pass: req.body.pass }
-    });
+    if (req.body.user.slice(-9) == 'yahoo.com') {
+        transporter = nodemailer.createTransport({
+            service: 'yahoo', host: 'smtp.mail.yahoo.com', secure: true, port: 465, auth: {  user:req.body.user, pass: req.body.pass}
+        });
+        
 
-    if (req.body.user.slice(-9)=='yahoo.com'){
-        transporter.service='yahoo';
-        transporter.host ='smtp.mail.yahoo.com';
-   
-    } else if (req.body.user.slice(-9) == 'gmail.com'){
-        transporter.service = 'gmail';
-        transporter.host = 'smtp.gmail.com';
-      
+    } else if (req.body.user.slice(-9) == 'gmail.com') {
+        transporter = nodemailer.createTransport({
+            service: 'gmail', host: 'smtp.gmail.com', secure: true, port: 465, auth: {  user: req.body.user, pass: req.body.pass}
+        });
+       
     }
-   
-    
-     mailOptions = {
-         from: req.body.user,
+
+
+    mailOptions = {
+        from: req.body.user,
         to: '',
         subject: req.body.subject,
         text: req.body.text,
@@ -75,7 +71,9 @@ app.post('/', function (req, res) {
     };
     i = 0;
     var array = JSON.parse(req.body.array)
+    console.log('\n***************************************************************************************************************\n')
     console.log(transporter)
+    console.log('\n********************************************************************************************************************\n')
     send(array);
     res.render('index')
 })

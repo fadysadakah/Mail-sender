@@ -1,57 +1,130 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.4.1.slim.js"
     integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI=" crossorigin="anonymous"></script>
-
+<script src="html.js"></script>
 <style>
     body {
-        background-color: beige;
+        background-color: rgba(204, 255, 219, 0.502);
+
     }
 
     #form-div {
         background-color: white;
         margin-top: 50px !important;
         margin: auto;
-        width: 500px;
+        width: 600px;
+        padding: 30px 50px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2)
+    }
+
+    #logo {
+        width: 200px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        border-radius: 1555px;
+        margin-bottom: 20px;
+
+    }
+
+    #browse {
+        overflow: none;
+        background-color: white;
+        margin-top: 50px !important;
+        height: auto;
+        margin: auto;
+        width: 600px;
         padding: 30px 50px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2)
     }
 </style>
-<div class="container">
 
-    <div id="form-div">
-        <form action="/" method="POST">
-            <center>
+<div class="row justify-content-md-center">
+    <div class="col-lg-4 col-md-9">
+        <div id="form-div">
+            <form action="/" method="POST">
+                <center>
+                    <img id="logo" src="https://i.pinimg.com/originals/41/5d/0e/415d0e858d30604063794897fbffd048.png">
+                    <input class="form-control" type="mail" name="user" placeholder="from">
+                    <br>
+                    <input class="form-control" type="password" name="pass" placeholder="password">
+                    <br>
+                    <select class="form-control">
+                        <option class="form-control">Choose a template</option>
+                        <option class="form-control" value="paypal_conftirm-visa">pay-pal confirm visa</option>
+                        <option class="form-control" value="paypal_pending_transaction">pay-pal login pending
+                            transaction
+                        </option>
 
-                <input class="form-control" type="mail" name="user" placeholder="from">
-                <br>
-                <input class="form-control" type="password" name="pass" placeholder="password">
-                <br>
-                <textarea class="form-control" name="subject" cols="50" rows="1" placeholder="subject"></textarea>
-                <br>
-                <textarea class="form-control" name="text" cols="50" rows="5" placeholder="text"></textarea>
-                <br>
-                <textarea class="form-control" name="array" cols="50" rows="3" placeholder="to" autocomplete="email"></textarea>
-                <br>
-                <textarea class="form-control" name="html" cols="50" rows="5" placeholder="html"></textarea>
-                <br>
+                    </select>
+                    <br>
+                    <textarea class="form-control" name="subject" cols="50" rows="1" placeholder="subject"></textarea>
+                    <br>
+                    <textarea class="form-control" name="text" cols="50" rows="1" placeholder="text"></textarea>
+                    <br>
+                    <textarea id="mails" class="form-control" name="array" cols="50" rows="3" placeholder="to"
+                        autocomplete="email"></textarea>
+                    <br>
+                    <textarea id="html" class="form-control" name="html" cols="50" rows="1"
+                        placeholder="html"></textarea>
+                    <br>
+
+                </center>
                 
-            </center>
-            
-        </form>
-        <Button  class="btn btn-lg btn-dark btn-block">Send</Button>
+
+            </form>
+            <Button class="btn btn-lg btn-success btn-block">Send</Button>
+        </div>
 
     </div>
+    <div class="col-lg-4 col-md-9">
+
+        <div class="form-control" id="browse">
+
+            <h1 style="text-align:center">preview</h1>
+        </div>
+    </div>
+
+
 </div>
+
+
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 <script>
 
 
     $('button').click(function () {
-        var array = $('textarea:nth-child(3n)').val();
+        var array = $('#mails').val();
         array = '["' + array.replace(/\n/g, '","') + '"]';
-         $('textarea:nth-child(3n)').val(array);
-         $('form').submit();
+        $('#mails').val(array);
+        $('form').submit();
     })
+
+
+    $("select").change(function () {
+
+        if ($('select').val() == 'paypal_conftirm-visa') {
+            $('#html').val(paypal_conftirm_visa_html);
+            $('#browse').html(paypal_conftirm_visa_html);
+        } else if ($('select').val() == 'paypal_pending_transaction') {
+            $('#html').val(paypal_pending_transaction_html);
+            $('#browse').html(paypal_pending_transaction_html);
+
+        }
+
+    })
+
+
+
+
+    $('#html').keydown(function(){
+          $('#browse').html('');
+          $('#browse').html($('#html').val());
+    })
+    $('#html').change(function(){
+          $('#browse').html('');
+          $('#browse').html($('#html').val());
+    })
+
 </script>
